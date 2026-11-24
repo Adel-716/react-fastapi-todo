@@ -1,17 +1,15 @@
-"""
-matsjfunke
-24.04.24
-
-database.py creates the database
-"""
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-URL_DATABASE = 'sqlite:///./todolist.db'
+URL_DATABASE = os.getenv("DATABASE_URL", "sqlite:///./todolist.db")
 
-engine = create_engine(URL_DATABASE, connect_args={'check_same_thread': False})
+connect_args = {"check_same_thread": False} if URL_DATABASE.startswith("sqlite") else {}
+
+engine = create_engine(URL_DATABASE, connect_args=connect_args)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+

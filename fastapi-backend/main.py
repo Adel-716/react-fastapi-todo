@@ -20,7 +20,8 @@ app = FastAPI()
 
 # allow the frontend to access endpoints
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://localhost",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -89,3 +90,7 @@ async def delete_todo(id: int, db: db_dependency):
         return {"status": 200, "detail": "todo was deleted"}
     except NoResultFound:
         return {"status": 400, "detail": "failed to delete todo"}
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
